@@ -6,7 +6,9 @@
 2. 一个被系统认为是符合规范的硬盘主引导扇区的特征是什么？
 
 >1.操作系统镜像文件ucore.img是如何一步一步生成的？
+
 首先进入Makefile文件所在位置执行make -v命令，显示make执行了那些命令。
+
 '
 + cc kern/init/init.c
 gcc -Ikern/init/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/init/init.c -o obj/kern/init/init.o
