@@ -11,16 +11,18 @@
 
 首先进入Makefile文件所在位置执行make -v命令，显示make执行了那些命令。(已精简)
 
-
+编译kern/init/init.c   生成obj/kern/init/init.o
 <pre><code> 
 + cc kern/init/init.c
 gcc -Ikern/init/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/init/init.c -o obj/kern/init/init.o 
 </code></pre>
 
 +cc kern/init/init.c
+
 表示编译了 kern/init 文件中的 init.c 文件
 
 gcc -Ikern/init/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/init/init.c -o obj/kern/init/init.o 
+
 实际指令
 
 + cc kern/libs/readline.c
