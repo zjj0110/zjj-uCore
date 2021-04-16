@@ -11,8 +11,9 @@
 
 首先进入Makefile文件所在位置执行make -v命令，显示make执行了那些命令。(已精简)
 
-编译kern/init/init.c   生成obj/kern/init/init.o
+
 <pre><code> 
+//编译kern/init/init.c   生成obj/kern/init/init.o
 + cc kern/init/init.c
 gcc -Ikern/init/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/init/init.c -o obj/kern/init/init.o 
 </code></pre>
@@ -21,9 +22,21 @@ gcc -Ikern/init/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-pro
 
 表示编译了 kern/init 文件中的 init.c 文件
 
-gcc -Ikern/init/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/init/init.c -o obj/kern/init/init.o 
+gcc -Ikern/init/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/init/init.c -o obj/kern/init/init.o   (实际指令)
 
-实际指令
+-Ikern/init/ -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ 制定编译时库搜索路径
+
+-fno-builtin          不使用C语言的内建函数
+
+-Wall                 生成程序中一系列的常见错误警告
+
+-ggdb                 生成可供gdb使用的调试信息
+
+-nostdinc             生成stabs格式的调试信息
+
+-fno-stack-protector  不生成用于检测缓冲区溢出的代码
+
+-c kern/init/init.c -o obj/kern/init/init.o    表示将kern/init/init.c文件编译为输出文件obj/kern/init/init.o
 
 + cc kern/libs/readline.c
 gcc -Ikern/libs/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/libs/readline.c -o obj/kern/libs/readline.o
