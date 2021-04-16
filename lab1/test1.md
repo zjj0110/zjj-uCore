@@ -20,9 +20,7 @@ gcc -Ikern/init/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-pro
 
 详解:
 
-+cc kern/init/init.c
-
-表示编译了 kern/init 文件中的 init.c 文件
++cc kern/init/init.c    表示编译了 kern/init 文件中的 init.c 文件
 
 gcc -Ikern/init/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/init/init.c -o obj/kern/init/init.o   (实际指令)
 
@@ -40,6 +38,8 @@ gcc -Ikern/init/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-pro
 
   + -c kern/init/init.c -o obj/kern/init/init.o    表示将kern/init/init.c文件编译为输出文件obj/kern/init/init.o
 
+
+<pre><code> 
 + cc kern/libs/readline.c
 gcc -Ikern/libs/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/libs/readline.c -o obj/kern/libs/readline.o
 
@@ -114,4 +114,4 @@ dd if=bin/kernel of=bin/ucore.img seek=1 conv=notrunc
 138+1 records in
 138+1 records out
 70775 bytes (71 kB) copied, 0.00569453 s, 12.4 MB/s
-'
+</code></pre>
