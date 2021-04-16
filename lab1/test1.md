@@ -20,23 +20,25 @@ gcc -Ikern/init/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-pro
 
 详解:
 
-+cc kern/init/init.c    表示编译了 kern/init 文件中的 init.c 文件
+  +cc kern/init/init.c    表示编译了 kern/init 文件中的 init.c 文件
 
-gcc -Ikern/init/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/init/init.c -o obj/kern/init/init.o   (实际指令)
+  gcc -Ikern/init/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/init/init.c -o obj/kern/init/init.o   (实际指令)
 
-  + -Ikern/init/ -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ 制定编译时库搜索路径
+   + -fno-builtin          不使用C语言的内建函数
 
-  + -fno-builtin          不使用C语言的内建函数
+   + -Wall                 生成程序中一系列的常见错误警告
 
-  + -Wall                 生成程序中一系列的常见错误警告
+   + -ggdb                 生成可供gdb使用的调试信息
 
-  + -ggdb                 生成可供gdb使用的调试信息
+   + -gstabs             生成stabs格式的调试信息
+   
+   + -nostdinc 不在标准系统文件夹寻找头文件，只在-I等参数指定的文件夹中搜索头文件 
 
-  + -nostdinc             生成stabs格式的调试信息
+   + -I<dir>   制定搜索头文件的路径
 
-  + -fno-stack-protector  不生成用于检测缓冲区溢出的代码
+   + -fno-stack-protector  不生成用于检测缓冲区溢出的代码
 
-  + -c kern/init/init.c -o obj/kern/init/init.o    表示将kern/init/init.c文件编译为输出文件obj/kern/init/init.o
+   + -c kern/init/init.c -o obj/kern/init/init.o    表示将kern/init/init.c文件编译为输出文件obj/kern/init/init.o
 
 
 <pre><code> 
