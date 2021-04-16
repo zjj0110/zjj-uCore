@@ -5,14 +5,22 @@
 1. 操作系统镜像文件ucore.img是如何一步一步生成的？(需要比较详细地解释Makefile中每一条相关命令和命令参数的含义，以及说明命令导致的结果)
 2. 一个被系统认为是符合规范的硬盘主引导扇区的特征是什么？
 
->1.操作系统镜像文件ucore.img是如何一步一步生成的？
-
-首先进入Makefile文件所在位置执行make -v命令，显示make执行了那些命令。
 
 
-<pre><code> + cc kern/init/init.c
+##1.操作系统镜像文件ucore.img是如何一步一步生成的？
+
+首先进入Makefile文件所在位置执行make -v命令，显示make执行了那些命令。(已精简)
+
+
+<pre><code> 
++ cc kern/init/init.c
 gcc -Ikern/init/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/init/init.c -o obj/kern/init/init.o 
 </code></pre>
+
++cc kern/init/init.c
+表示编译了 kern/init 文件中的 init.c 文件
+gcc -Ikern/init/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/init/init.c -o obj/kern/init/init.o 
+实际指令
 
 + cc kern/libs/readline.c
 gcc -Ikern/libs/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/libs/readline.c -o obj/kern/libs/readline.o
