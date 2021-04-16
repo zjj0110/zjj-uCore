@@ -34,7 +34,7 @@ gcc -Ikern/init/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-pro
    
    + -nostdinc 不在标准系统文件夹寻找头文件，只在-I等参数指定的文件夹中搜索头文件 
 
-   + -I <dir>   制定搜索头文件的路径
+   + -Idir   制定搜索头文件的路径
 
    + -fno-stack-protector  不生成用于检测缓冲区溢出的代码
 
