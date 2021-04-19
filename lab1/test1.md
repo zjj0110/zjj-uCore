@@ -125,7 +125,11 @@ ld -m    elf_i386 -nostdlib -N -e start -Ttext 0x7C00 obj/boot/bootasm.o obj/boo
 </code></pre>
 
 
-dd 命令将c程序放入一个虚拟硬盘
+dd 命令用指定大小的块拷贝一个文件，并在拷贝的同时进行指定的转换。
+if=文件名：输入文件名
+of=文件名：输出文件名 
+count=blocks：拷贝blocks个块
+conv=notrunc：用不截短输出方式转换文件。
 
 <pre><code>
 //生成一个ucore.img虚拟硬盘
