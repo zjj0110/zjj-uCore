@@ -104,12 +104,19 @@ gcc -Ilibs/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protecto
 
 
 ld 命令将目标文件与库链接为可执行文件或库文件。
+
 ld [OPTIONS] OBJFILES
+
 -m <emulation>       模拟指定的链接器
--T <scriptfile>      使用 scriptfile 作为链接器脚本。
--o <output>          指定输出文件的名称  
+   
+-T <scriptfile>      使用 scriptfile 作为链接器脚本
+   
+-o <output>          指定输出文件的名称 
+   
 -N                   指定读取/写入文本和数据段
+
 -e <entry>        	使用指定的符号作为程序的初始执行点  
+   
 -Ttext=<org>         使用指定的地址作为文本段的起始点 
  
 <pre><code>
