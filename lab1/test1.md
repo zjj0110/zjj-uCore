@@ -42,65 +42,73 @@ gcc -Ikern/init/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-pro
 
 
 <pre><code> 
-+ cc kern/libs/readline.c
++ cc kern/libs/readline.c//编译kern/libs/readline.c   生成obj/kern/libs/readline.o
 gcc -Ikern/libs/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/libs/readline.c -o obj/kern/libs/readline.o
 
-+ cc kern/libs/stdio.c
++ cc kern/libs/stdio.c//编译kern/libs/stdio.c   生成obj/kern/libs/stdio.o
 gcc -Ikern/libs/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/libs/stdio.c -o obj/kern/libs/stdio.o
 
-+ cc kern/debug/kdebug.c
++ cc kern/debug/kdebug.c//编译 kern/debug/kdebug.c   生成obj/kern/debug/kdebug.o
 gcc -Ikern/debug/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/debug/kdebug.c -o obj/kern/debug/kdebug.o
 
-+ cc kern/debug/kmonitor.c
++ cc kern/debug/kmonitor.c//编译kern/debug/kmonitor.c   生成obj/kern/debug/kmonitor.o
 gcc -Ikern/debug/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/debug/kmonitor.c -o obj/kern/debug/kmonitor.o
 
-+ cc kern/debug/panic.c
++ cc kern/debug/panic.c//编译kern/debug/panic.c   生成obj/kern/debug/panic.o
 gcc -Ikern/debug/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/debug/panic.c -o obj/kern/debug/panic.o
 
-+ cc kern/driver/clock.c
++ cc kern/driver/clock.c//编译kern/driver/clock.c   生成obj/kern/driver/clock.o
 gcc -Ikern/driver/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/driver/clock.c -o obj/kern/driver/clock.o
 
-+ cc kern/driver/console.c
++ cc kern/driver/console.c//编译kern/driver/console.c   生成obj/kern/driver/console.o
 gcc -Ikern/driver/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/driver/console.c -o obj/kern/driver/console.o
 
-+ cc kern/driver/intr.c
++ cc kern/driver/intr.c//编译kern/driver/intr.c   生成obj/kern/driver/intr.o
 gcc -Ikern/driver/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/driver/intr.c -o obj/kern/driver/intr.o
 
-+ cc kern/driver/picirq.c
++ cc kern/driver/picirq.c//编译kern/driver/picirq.c   生成obj/kern/driver/picirq.o
 gcc -Ikern/driver/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/driver/picirq.c -o obj/kern/driver/picirq.o
 
-+ cc kern/trap/trap.c
++ cc kern/trap/trap.c//编译kern/trap/trap.c   生成obj/kern/trap/trap.o
 gcc -Ikern/trap/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/trap/trap.c -o obj/kern/trap/trap.o
+</code></pre>
 
-+ cc kern/trap/trapentry.S
+ .S 文件是经过预编译的汇编语言源代码文件
+
+<pre><code>
++ cc kern/trap/trapentry.S//编译kern/trap/trapentry.S   生成obj/kern/trap/trapentry.o
 gcc -Ikern/trap/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/trap/trapentry.S -o obj/kern/trap/trapentry.o
 
-+ cc kern/trap/vectors.S
++ cc kern/trap/vectors.S//编译kern/trap/vectors.S   生成obj/kern/trap/vectors.o
 gcc -Ikern/trap/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/trap/vectors.S -o obj/kern/trap/vectors.o
 
-+ cc kern/mm/pmm.c
++ cc kern/mm/pmm.c//编译kern/mm/pmm.c   生成obj/kern/mm/pmm.o
 gcc -Ikern/mm/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/mm/pmm.c -o obj/kern/mm/pmm.o
 
-+ cc libs/printfmt.c
++ cc libs/printfmt.c//编译libs/printfmt.c   生成obj/libs/printfmt.o
 gcc -Ilibs/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/  -c libs/printfmt.c -o obj/libs/printfmt.o
 
-+ cc libs/string.c
++ cc libs/string.c//编译libs/string.c   生成obj/libs/string.o
 gcc -Ilibs/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/  -c libs/string.c -o obj/libs/string.o
+</code></pre>
 
-+ ld bin/kernel
+ld 命令目标文件转化成可执行程序
+
+<pre><code>
++ ld bin/kernel//生成kernel执行程序
 ld -m    elf_i386 -nostdlib -T tools/kernel.ld -o bin/kernel  obj/kern/init/init.o obj/kern/libs/readline.o obj/kern/libs/stdio.o obj/kern/debug/kdebug.o obj/kern/debug/kmonitor.o obj/kern/debug/panic.o obj/kern/driver/clock.o obj/kern/driver/console.o obj/kern/driver/intr.o obj/kern/driver/picirq.o obj/kern/trap/trap.o obj/kern/trap/trapentry.o obj/kern/trap/vectors.o obj/kern/mm/pmm.o  obj/libs/printfmt.o obj/libs/string.o
 
-+ cc boot/bootasm.S
++ cc boot/bootasm.S//编译-c boot/bootasm.S   生成obj/boot/bootasm.o
 gcc -Iboot/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Os -nostdinc -c boot/bootasm.S -o obj/boot/bootasm.o
 
-+ cc boot/bootmain.c
++ cc boot/bootmain.c//编译boot/bootmain.c   生成obj/boot/bootmain.o
 gcc -Iboot/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Os -nostdinc -c boot/bootmain.c -o obj/boot/bootmain.o
 
-+ cc tools/sign.c
++ cc tools/sign.c//编译tools/sign.c   生成obj/sign/tools/sign.o
 gcc -Itools/ -g -Wall -O2 -c tools/sign.c -o obj/sign/tools/sign.o
 gcc -g -Wall -O2 obj/sign/tools/sign.o -o bin/sign
 
-+ ld bin/bootblock
++ ld bin/bootblock//生成kernel执行程序
 ld -m    elf_i386 -nostdlib -N -e start -Ttext 0x7C00 obj/boot/bootasm.o obj/boot/bootmain.o -o obj/bootblock.o
 'obj/bootblock.out' size: 472 bytes
 build 512 bytes boot sector: 'bin/bootblock' success!
