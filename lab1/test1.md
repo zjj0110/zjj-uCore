@@ -9,7 +9,7 @@
 
 ## 1.操作系统镜像文件ucore.img是如何一步一步生成的？
 
-首先进入Makefile文件所在位置执行make -v命令，显示make执行了那些命令。(已精简)
+**首先进入Makefile文件所在位置执行make -v命令，显示make执行了那些命令。(已精简)
 
 
 <pre><code> 
@@ -154,3 +154,5 @@ dd if=bin/kernel of=bin/ucore.img seek=1 conv=notrunc
 138+1 records out
 70775 bytes (71 kB) copied, 0.00569453 s, 12.4 MB/s
 </code></pre>
+
+**其次阅读Makefile代码分析make生成ucore.img的全过程
