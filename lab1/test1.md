@@ -9,6 +9,7 @@
 
 ## 1.操作系统镜像文件ucore.img是如何一步一步生成的？
 
+
 第一步、进入Makefile文件所在位置执行make -v命令，显示make执行了那些命令。(已精简)
 
 
@@ -102,9 +103,15 @@ gcc -Ilibs/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protecto
 </code></pre>
 
 
-ld 命令将目标文件转化成可执行程序
-
-
+ld 命令将目标文件与库链接为可执行文件或库文件。
+ld [OPTIONS] OBJFILES
+-m <emulation>       模拟指定的链接器
+-T <scriptfile>      使用 scriptfile 作为链接器脚本。
+-o <output>          指定输出文件的名称  
+-N                   指定读取/写入文本和数据段
+-e <entry>        	使用指定的符号作为程序的初始执行点  
+-Ttext=<org>         使用指定的地址作为文本段的起始点 
+ 
 <pre><code>
 + ld bin/kernel//生成kernel执行程序
 ld -m    elf_i386 -nostdlib -T tools/kernel.ld -o bin/kernel  obj/kern/init/init.o obj/kern/libs/readline.o obj/kern/libs/stdio.o obj/kern/debug/kdebug.o obj/kern/debug/kmonitor.o obj/kern/debug/panic.o obj/kern/driver/clock.o obj/kern/driver/console.o obj/kern/driver/intr.o obj/kern/driver/picirq.o obj/kern/trap/trap.o obj/kern/trap/trapentry.o obj/kern/trap/vectors.o obj/kern/mm/pmm.o  obj/libs/printfmt.o obj/libs/string.o
