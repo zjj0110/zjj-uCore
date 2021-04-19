@@ -20,9 +20,9 @@ gcc -Ikern/init/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-pro
 
 详解:
 
-  +cc kern/init/init.c    表示编译了 kern/init 文件中的 init.c 文件
++cc kern/init/init.c    表示编译了 kern/init 文件中的 init.c 文件
 
-  gcc -Ikern/init/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/init/init.c -o obj/kern/init/init.o   (实际指令)
+gcc -Ikern/init/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/init/init.c -o obj/kern/init/init.o   (实际指令)
 
    + -fno-builtin          不使用C语言的内建函数
 
@@ -101,8 +101,9 @@ gcc -Ilibs/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protecto
 gcc -Ilibs/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/  -c libs/string.c -o obj/libs/string.o
 </code></pre>
 
+
 ld 命令目标文件转化成可执行程序
-- O2 编译器优化级别第二级
+
 
 <pre><code>
 + ld bin/kernel//生成kernel执行程序
@@ -122,6 +123,7 @@ gcc -g -Wall -O2 obj/sign/tools/sign.o -o bin/sign
 ld -m    elf_i386 -nostdlib -N -e start -Ttext 0x7C00 obj/boot/bootasm.o obj/boot/bootmain.o -o obj/bootblock.o
 'obj/bootblock.out' size: 472 bytes
 </code></pre>
+
 
 dd 命令将c程序放入一个虚拟硬盘
 
