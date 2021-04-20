@@ -171,4 +171,77 @@ dd if=bin/kernel of=bin/ucore.img seek=1 conv=notrunc
 
 第二步、其次阅读Makefile代码分析make生成ucore.img的全过程
 
+<pre><code>
+# create ucore.img
+UCOREIMG	:= $(call totarget,ucore.img)
+
+$(UCOREIMG): $(kernel) $(bootblock)
+	$(V)dd if=/dev/zero of=$@ count=10000
+	$(V)dd if=$(bootblock) of=$@ conv=notrunc
+	$(V)dd if=$(kernel) of=$@ seek=1 conv=notrunc
+
+$(call create_target,ucore.img)
+</code></pre>
+生成ucore.img代码，需要生成kernel和bootblock文件
+
+生成kernel
+<pre><code>
+# create kernel target
+kernel = $(call totarget,kernel)
+
+$(kernel): tools/kernel.ld
+
+$(kernel): $(KOBJS)
+	@echo + ld $@
+	$(V)$(LD) $(LDFLAGS) -T tools/kernel.ld -o $@ $(KOBJS)
+	@$(OBJDUMP) -S $@ > $(call asmfile,kernel)
+	@$(OBJDUMP) -t $@ | $(SED) '1,/SYMBOL TABLE/d; s/ .* / /; /^$$/d' > $(call symfile,kernel)
+
+$(call create_target,kernel)
+</code></pre>
+
+生成bootblock
+<pre><code>
+# create bootblock
+bootfiles = $(call listf_cc,boot)
+$(foreach f,$(bootfiles),$(call cc_compile,$(f),$(CC),$(CFLAGS) -Os -nostdinc))
+
+bootblock = $(call totarget,bootblock)
+
+$(bootblock): $(call toobj,$(bootfiles)) | $(call totarget,sign)
+	@echo + ld $@
+	$(V)$(LD) $(LDFLAGS) -N -e start -Ttext 0x7C00 $^ -o $(call toobj,bootblock)
+	@$(OBJDUMP) -S $(call objfile,bootblock) > $(call asmfile,bootblock)
+	@$(OBJCOPY) -S -O binary $(call objfile,bootblock) $(call outfile,bootblock)
+	@$(call totarget,sign) $(call outfile,bootblock) $(bootblock)
+
+$(call create_target,bootblock)
+</code></pre>
+
+因时间、精力、能力有限，Makefile文件中代码未能完全理解
+
 ## 2一个被系统认为是符合规范的硬盘主引导扇区的特征是什么？
+
+根据sign.c 可知，一个符合规范的引导扇区应当不大于512字节，且最后两个位一定是0x55和0xAA
+
+sign.c的部分代码
+<pre><code>
+ printf("'%s' size: %lld bytes\n", argv[1], (long long)st.st_size);
+    if (st.st_size > 510) {
+        fprintf(stderr, "%lld >> 510!!\n", (long long)st.st_size);
+        return -1;
+    }
+    char buf[512];
+    memset(buf, 0, sizeof(buf));
+    FILE *ifp = fopen(argv[1], "rb");
+    int size = fread(buf, 1, st.st_size, ifp);
+    if (size != st.st_size) {
+        fprintf(stderr, "read '%s' error, size is %d.\n", argv[1], size);
+        return -1;
+    }
+    fclose(ifp);
+    buf[510] = 0x55;
+    buf[511] = 0xAA;
+    FILE *ofp = fopen(argv[2], "wb+");
+size = fwrite(buf, 1, 512, ofp);
+</code></pre>
