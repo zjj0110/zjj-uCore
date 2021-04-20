@@ -218,7 +218,20 @@ $(bootblock): $(call toobj,$(bootfiles)) | $(call totarget,sign)
 $(call create_target,bootblock)
 </code></pre>
 
+//生成sign
+<pre><code>
+$(call add_files_host,tools/sign.c,sign,sign)
+$(call create_target_host,sign,sign)
+</code></pre>
+
 因时间、精力、能力有限，Makefile文件中代码未能完全理解
+
+总结大致执行过程：
+1、编译libs和kern目录下所有的.c和.S文件，生成.o文件，并链接得到bin/kernel文件；
+2、编译boot目录下所有的.c和.S文件，生成.o文件，并链接得到bin/bootblock.out文件；
+3、编译tools/sign.c文件，得到bin/sign文件；
+4、利用bin/sign工具将bin/bootblock.out文件转化为512字节的bin/bootblock文件，并将bin/bootblock的最后两个字节设置为0x55AA；
+为bin/ucore.img分配内存空间，并将bin/bootblock复制到bin/ucore.img的第一个block，紧接着将bin/kernel复制到bin/ucore.img第二个block开始的位置。
 
 ## 2.一个被系统认为是符合规范的硬盘主引导扇区的特征是什么？
 
