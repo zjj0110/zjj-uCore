@@ -56,7 +56,7 @@ readseg(uintptr_t va, uint32_t count, uint32_t offset) {
     }
 }
  </pre></code>
- 可知：
+ 阅读代码可知：
  
  waitdisk(void)函数等待磁盘准备好。
  
@@ -98,12 +98,12 @@ bad:
 }
    </pre></code>
    
-阅读bootmain(void)函数。
+阅读bootmain(void)函数：
 
-函数先读取首先读取ELF的头部，然后根据e_magic判断ELF文件是否合法。
+   函数先读取首先读取ELF的头部，然后根据e_magic判断ELF文件是否合法。
 
-将ELF文件中数据加载入内存。
+   将ELF文件中数据加载入内存。
 
-根据ELF头部储存的入口信息，找到内核的入口。
+   根据ELF头部储存的入口信息，找到内核的入口。
 
  ## 二、运行并调试bootloader和OS。
