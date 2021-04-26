@@ -47,5 +47,7 @@ void print_stackframe(void) {
 ebp:0x00007bf8 eip:0x00007d68 args:0xc031fcfa 0xc08ed88e 0x64e4d08e 0xfa7502a8
 </pre></code>
 ebp:0x00007bf8,ebp的值是kern_init函数的栈顶地址
+
 eip:0x00007d6e,eip的值是kern_init函数的返回地址
+
 args:0xc031fcfa 0xc08ed88e 0x64e4d08e 0xfa7502a8 一般来说，args存放的4个dword是对应4个输入参数的值。但这里比较特殊，由于bootmain函数调用kern_init并没传递任何输入参数，并且栈顶的位置恰好在boot loader第一条指令存放的地址的上面，而args恰好是kern_int的ebp寄存器指向的栈顶往上第2~5个单元，因此args存放的就是bootloader指令的前16个字节。
