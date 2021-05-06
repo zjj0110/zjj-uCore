@@ -191,7 +191,7 @@ default_free_pages(struct Page *base, size_t n) {
     nr_free += n;		//最后的最后，空闲页数量加n
     return ;
 }
-
+</pre></code>
 default_free_pages主要完成的是对于页的释放操作。
 首先使用一个assert语句断言这个基地址所在的页是否为预留，如果不是预留页，那么说明它已经是free状态，无法再次free，也就是之前所述，只有处在占用的页，才能有free操作。
 
@@ -201,4 +201,4 @@ default_free_pages主要完成的是对于页的释放操作。
 
 之后，如果插入基地址附近的高地址或低地址可以合并，那么需要更新相应的连续空闲页数量，向高合并和向低合并。
 
-</pre></code>
+
