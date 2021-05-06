@@ -79,7 +79,7 @@ kern_init --> pmm_init-->page_init-->init_memmap--> pmm_manager->init_memmap
 内核初始化函数 -(调用)- 物理内存初始化函数 -(调用)- 整体物理地址的初始化函数 -(调用)- 初始化空闲块列表函数 -(调用)- 物理地址管理函数 -(调用)- 初始化空闲块列表函数
 
 default_init_memmap()代码：
-<pre><code></pre></code>
+<pre><code>
 static void
 default_init_memmap(struct Page *base, size_t n) {
     assert(n > 0);
