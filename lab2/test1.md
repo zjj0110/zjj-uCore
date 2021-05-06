@@ -60,7 +60,7 @@ const struct pmm_manager default_pmm_manager = {
 
 实现First fit算法的相关函数：default_init，default_init_memmap，default_alloc_pages， default_free_pages。
 
-default_init原代码：
+default_init代码：
 <pre><code>
 free_area_t free_area;//实体化空闲空间块列表结构 free_area
 
@@ -74,47 +74,42 @@ default_init(void) {
     nr_free = 0;//初始化nr_free
 }
 </pre></code>
-不做更改。
-
 kern_init --> pmm_init-->page_init-->init_memmap--> pmm_manager->init_memmap
 
 内核初始化函数 -(调用)- 物理内存初始化函数 -(调用)- 整体物理地址的初始化函数 -(调用)- 初始化空闲块列表函数 -(调用)- 物理地址管理函数 -(调用)- 初始化空闲块列表函数
+
 default_init_memmap()代码：
-<pre><code>
+<pre><code></pre></code>
 static void
 default_init_memmap(struct Page *base, size_t n) {
     assert(n > 0);
     struct Page *p = base;
     for (; p != base + n; p ++) {
         assert(PageReserved(p));
-        p->flags = p->property = 0;
+        p->flags = 0;
+        SetPageProperty(p);    //更改页的状态
+        p->property = 0;
         set_page_ref(p, 0);
+        list_add_before(&free_list, &(p->page_link));
     }
-    base->property = n;
-    SetPageProperty(base);
     nr_free += n;
-    list_add(&free_list, &(base->page_link));
+    //first block
+    base->property = n;
 }
 </pre></code>
-不做更改。
 
 default_alloc_pages()代码：
 <pre><code>
 static struct Page *
 default_alloc_pages(size_t n) {
     assert(n > 0);
-    
-    //如果请求页数大于物理页数，返回NULL，表示分配失败
     if (n > nr_free) {
         return NULL;
     }
-    
-    
     list_entry_t *le, *len;
     le = &free_list;
  
-    while((le=list_next(le)) != &free_list) {
-    //寻找一个可分配的连续页
+    while((le=list_next(le)) != &free_list) {//寻找一个可分配的连续页
       struct Page *p = le2page(le, page_link);
       if(p->property >= n){
         int i;
@@ -139,4 +134,71 @@ default_alloc_pages(size_t n) {
 }
 </pre></code>
 其中le2page(le, page_link)可将list_entry_t转换为page类型；
-在默认的default_alloc_pages()函数中采用的分配方法是：如果请求页数大于物理页数，返回NULL；否则，扫描free_area_t找到第一个不小于待申请的物理页数目的空闲block，如果空闲block的物理页数目刚好等于待申请的数目，那么直接将该空闲block全部分配给申请者，如果空闲block的物理页数目大于待申请的数目，那么将空闲block拆分成两个block，第一个block的物理页数目等于待申请的数目，第二个block的物理页数目为剩余的数目，
+
+首先判断空闲页的大小是否大于所需的页块大小，如果请求页数大于物理页数，返回NULL；
+
+否则，扫描free_area_t找到适合的页，使该页p->property >= n，则重新设置标志位，调用SetPageReserved(pp)和ClearPageProperty(pp)，设置当前页面预留，以及清空该页面的连续空闲页面数量值。然后从空闲链表，即free_area_t中，记录空闲页的链表，删除此项。
+
+如果当前空闲页的大小大于所需大小，则分割页块，具体操作就是，刚刚分配了n个页，如果分配完了，还有连续的空间，则在最后分配的那个页的下一个页（未分配），更新它的连续空闲页值。如果正好合适，则不进行操作。
+
+最后计算剩余空闲页个数并返回分配的页块地址。
+
+default_free_pages()代码：
+<pre><code>
+static void
+default_free_pages(struct Page *base, size_t n) {
+    assert(n > 0);
+    assert(PageReserved(base));
+ 
+    list_entry_t *le = &free_list;
+    struct Page * p;
+    while((le=list_next(le)) != &free_list) {
+      p = le2page(le, page_link);
+      if(p>base){
+        break;
+      }
+}		//找到释放的位置
+ 
+    //list_add_before(le, base->page_link);
+    for(p=base;p<base+n;p++){
+      list_add_before(le, &(p->page_link));
+    }		//在这个位置开始，插入释放数量的空页
+    base->flags = 0;
+    set_page_ref(base, 0);//引用次数
+    ClearPageProperty(base);
+    SetPageProperty(base);
+    base->property = n;
+    
+    p = le2page(le,page_link) ;		//此时，p已经到达了插入完释放数量空页的后一个页的位置上。此时，一般会满足base+n==p，因此，尝试向后合并空闲页。如果能合并，那么base的连续空闲页加上p的连续空闲页，且p的连续空闲页置为0,；如果之后的页不能合并，那么p的property一直为0，下面的代码不会对它产生影响。
+    if( base+n == p ){
+      base->property += p->property;
+      p->property = 0;
+    }
+    le = list_prev(&(base->page_link));		//获取基地址页的前一个页，如果为空，那么循环查找之前所有为空，能够合并的页
+    p = le2page(le, page_link);
+    if(le!=&free_list && p==base-1){
+      while(le!=&free_list){
+        if(p->property){
+          p->property += base->property;
+          base->property = 0;
+          break;		//不断更新前一个页p的property值，并清除base
+        }
+        le = list_prev(le);
+        p = le2page(le,page_link);
+      }
+    }
+ 
+    nr_free += n;		//最后的最后，空闲页数量加n
+    return ;
+}
+
+default_free_pages主要完成的是对于页的释放操作。
+首先使用一个assert语句断言这个基地址所在的页是否为预留，如果不是预留页，那么说明它已经是free状态，无法再次free，也就是之前所述，只有处在占用的页，才能有free操作。
+
+之后，声明一个页p，p遍历一遍整个物理空间，直到遍历到base所在位置停止，开始释放操作。
+
+找到了这个基地址之后呢，就可以将空闲页重新加进来（之前在分配的时候，删除了），之后就是一系列与初始化空闲页一样的设置标记位操作了。
+
+之后，如果插入基地址附近的高地址或低地址可以合并，那么需要更新相应的连续空闲页数量，向高合并和向低合并。
+
+</pre></code>
