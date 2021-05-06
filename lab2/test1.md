@@ -6,9 +6,9 @@
     
 打开default_pmm.c文件，阅读注释。
 
-按照注释要求阅读库文件list.h,其中包含了双向指针数据结构结构list_entry_t(list_entry),以及list_init(双向指针初始化), list_add(list_add_after)(双向指针尾插), list_add_before(双向指针头插), list_del(删除双向指针), list_next(返回下一个双向指针), list_prev(返回前一个双向指针)函数。
+按照注释要求阅读库文件list.h,其中包含了双向指针数据结构结构 list_entry_t(list_entry),以及 list_init(双向指针初始化), list_add(list_add_after)(双向指针尾插), list_add_before(双向指针头插), list_del(删除双向指针), list_next(返回下一个双向指针), list_prev(返回前一个双向指针)函数。
 
-阅读代码，寻找重要数据结构。
+## 阅读代码，寻找重要数据结构。
 
 物理页数据结构Page (kern/mm/memlayout.h)
 <pre><code>
@@ -55,10 +55,9 @@ const struct pmm_manager default_pmm_manager = {
     .check = default_check,
 };
 </pre></code>
-<pre><code></pre></code>
 对象名称：default_pmm_manager;方法函数：default_init(初始化空闲块),default_init_memmap(初始化空闲块列表),default_alloc_pages(分配空闲页),default_free_pages(),default_nr_free_pages(释放页),default_check(验证函数);
 
-实现First fit算法的相关函数：default_init，default_init_memmap，default_alloc_pages， default_free_pages。
+## 实现First fit算法的相关函数：default_init，default_init_memmap，default_alloc_pages， default_free_pages。
 
 default_init代码：
 <pre><code>
@@ -74,6 +73,7 @@ default_init(void) {
     nr_free = 0;//初始化nr_free
 }
 </pre></code>
+
 kern_init --> pmm_init-->page_init-->init_memmap--> pmm_manager->init_memmap
 
 内核初始化函数 -(调用)- 物理内存初始化函数 -(调用)- 整体物理地址的初始化函数 -(调用)- 初始化空闲块列表函数 -(调用)- 物理地址管理函数 -(调用)- 初始化空闲块列表函数
